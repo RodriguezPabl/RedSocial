@@ -12,7 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/redsocial/auth")
 public class AuthController {
 	private final UserService userService;
 	private final AuthenticationManager authenticationManager;
