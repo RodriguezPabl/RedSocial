@@ -1,11 +1,11 @@
 import API from "../utils/axiosConfig";
 
 const register = (username, password) => {
-  return API.post(`${API}/register`, { username, password });
+  return API.post("/register", { username, password });
 };
 
 const login = (username, password) => {
-  return API.post(`${API}/login`, { username, password })
+  return API.post("/login", { username, password })
     .then((response) => {
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);

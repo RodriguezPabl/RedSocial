@@ -48,7 +48,7 @@ public class SecurityConfig {
 		
 		http.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
+				.requestMatchers("/redsocial/auth/**", "/h2-console/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
