@@ -1,10 +1,10 @@
 import RegisterForm from "../components/RegisterForm";
 
-function RegisterPage() {
+function RegisterPage({onRegister}) {
   return (
     <div>
       <h1>Página de Registro</h1>
-      <RegisterForm />
+      <RegisterForm onRegister={onRegister} />
     </div>
   );
 }

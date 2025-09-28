@@ -1,10 +1,11 @@
 import LoginForm from "../components/LoginForm";
 
-function LoginPage() {
+function LoginPage({ onLogin }) {
   return (
     <div>
+    <div className="container mt-5"></div>
       <h1>Página de Login</h1>
-      <LoginForm />
+      <LoginForm onLogin={onLogin} />
     </div>
   );
 }

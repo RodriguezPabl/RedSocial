@@ -1,19 +1,23 @@
 import { useState } from "react";
 import authService from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
 function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     authService.register(username, password)
       .then(() => {
-        setMessage("Usuario registrado ✅");
+        setMessage("Usuario registrado");
+        //onRegister();
+        navigate("/login");
       })
       .catch(() => {
-        setMessage("Error en registro ❌");
+        setMessage("Error en registro");
       });
   };
 

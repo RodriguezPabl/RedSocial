@@ -1,19 +1,23 @@
 import { useState } from "react";
 import authService from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
-function LoginForm() {
+function LoginForm({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     authService.login(username, password)
       .then(() => {
-        setMessage("Login exitoso 🚀");
+        //setMessage("Login exitoso");
+        onLogin();
+        navigate("/profile");
       })
       .catch(() => {
-        setMessage("Error en login ❌");
+        setMessage("Error en login");
       });
   };
 
