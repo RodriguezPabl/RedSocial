@@ -1,41 +1,83 @@
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation} from "react-router-dom";
 import { useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
+import HomePage from "./pages/HomePage";
+import Navbar from "./components/Navbar";
+import PostsPage from "./pages/PostsPage";
+
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+  // revisa si hay token guardado
+  return !!localStorage.getItem("token");
+});
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem("token");
   };
 
+  const Layout = ({ children }) => {
+    const location = useLocation();
+
+    const hideNavbar = ["/", "/login", "/register"].includes(location.pathname);
+
+    return (
+      <>
+        {!hideNavbar && <Navbar onLogout={handleLogout} />}
+        {children}
+      </>
+    );
+  };
+
   return (
     <Router>
-      <nav style={{ padding: "10px", backgroundColor: "#f8f9fa" }}>
-        {!isLoggedIn && (
-          <>
-            <Link to="/login" style={{ marginRight: "10px" }}>Login</Link>
-            <Link to="/register">Registro</Link>
-          </>
-        )}
-        {isLoggedIn && (
-          <>
-            <Link to="/profile" style={{ marginRight: "10px" }}>Perfil</Link>
-            <button className="btn btn-outline-danger btn-sm" onClick={handleLogout}>Logout</button>
-          </>
-        )}
-      </nav>
+      <Layout>
+        <Routes>
+          {/* Página de inicio */}
+          <Route path="/" element={<HomePage />} />
 
-      <Routes>
-        {/* Redirige a /profile si ya está logueado */}
-        <Route path="/login" element={!isLoggedIn ? <LoginPage onLogin={() => setIsLoggedIn(true)} /> : <Navigate to="/profile" />} />
-        <Route path="/register" element={!isLoggedIn ? <RegisterPage /> : <Navigate to="/profile" />} />
-        <Route path="/profile" element={isLoggedIn ? <ProfilePage /> : <Navigate to="/login" />} />
-        <Route path="/" element={<Navigate to="/login" />} />
-      </Routes>
+          {/* Login */}
+          <Route
+            path="/login"
+            element={
+              !isLoggedIn ? (
+                <LoginPage setIsLoggedIn={setIsLoggedIn} />
+              ) : (
+                <Navigate to="/posts" />
+              )
+            }
+          />
+
+           {/* Register */}
+          <Route
+            path="/register"
+            element={
+              !isLoggedIn ? (
+                <RegisterPage />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+
+          {/* Posts (feed principal) */}
+          <Route
+            path="/posts"
+            element={isLoggedIn ? <PostsPage /> : <Navigate to="/" />}
+          />
+
+
+           {/* Perfil */}
+          <Route
+            path="/profile"
+            element={isLoggedIn ? <ProfilePage /> : <Navigate to="/" />}
+          />
+
+        </Routes>
+      </Layout>
     </Router>
   );
 }

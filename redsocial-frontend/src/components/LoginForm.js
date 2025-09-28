@@ -2,7 +2,7 @@ import { useState } from "react";
 import authService from "../services/authService";
 import { useNavigate } from "react-router-dom";
 
-function LoginForm({ onLogin }) {
+function LoginForm({ setIsLoggedIn }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -11,10 +11,12 @@ function LoginForm({ onLogin }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     authService.login(username, password)
-      .then(() => {
+      .then((token) => {
+        localStorage.setItem("token", token);
         //setMessage("Login exitoso");
-        onLogin();
-        navigate("/profile");
+        setIsLoggedIn(true);
+        //onLogin();
+        navigate("/posts");
       })
       .catch(() => {
         setMessage("Error en login");
