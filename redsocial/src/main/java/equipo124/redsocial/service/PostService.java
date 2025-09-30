@@ -3,30 +3,24 @@ package equipo124.redsocial.service;
 import equipo124.redsocial.model.Post;
 import equipo124.redsocial.model.User;
 import equipo124.redsocial.repository.PostRepository;
-import equipo124.redsocial.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class PostService {
-    private final PostRepository postRepository;
-    private final UserRepository userRepository;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    private final PostRepository postRepository;
+
+    public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.userRepository = userRepository;
     }
 
-    public Post createPost(String username, String content, String imageUrl) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    public Post createPost(User user, String content, String imageUrl) {
         Post post = new Post();
+        post.setUser(user);
         post.setContent(content);
         post.setImageUrl(imageUrl);
-        post.setCreatedAt(LocalDateTime.now());
-        post.setUser(user);
         return postRepository.save(post);
     }
 
