@@ -61,6 +61,8 @@ public class PostController {
     // 📌 Obtener todos los posts
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
+    	List<Post> posts = postService.getAllPosts();
+        posts.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt())); // orden descendente
         return ResponseEntity.ok(postService.getAllPosts());
     }
 }
