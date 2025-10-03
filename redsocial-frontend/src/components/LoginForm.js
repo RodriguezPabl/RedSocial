@@ -11,8 +11,8 @@ function LoginForm({ setIsLoggedIn }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     authService.login(username, password)
-      .then((token) => {
-        localStorage.setItem("token", token);
+      .then((response) => {
+        localStorage.setItem("token", response.token);
         //setMessage("Login exitoso");
         setIsLoggedIn(true);
         //onLogin();

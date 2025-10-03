@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import postService from "../services/postService";
+//import { useEffect, useState } from "react";
+//import postService from "../services/postService";
 
-function PostList() {
+function PostList({posts}) {
+  /*
   const [posts, setPosts] = useState([]);
 
   const fetchPosts = async () => {
@@ -17,6 +18,7 @@ function PostList() {
   useEffect(() => {
     fetchPosts();
   }, []);
+*/
 
   return (
     <div>
@@ -24,7 +26,9 @@ function PostList() {
         <p>No hay publicaciones aún</p>
       ) : (
         posts.map((post) => (
-          <div key={post.id} style={{ border: "1px solid #ccc", margin: "10px 0", padding: "10px" }}>
+          <div key={post.id}
+           style={{ border: "1px solid #ccc", margin: "10px 0", padding: "10px" }}
+           >
             <p><strong>{post.user?.username || "Anónimo"}</strong></p>
             <p>{post.content}</p>
             {post.imageUrl && (

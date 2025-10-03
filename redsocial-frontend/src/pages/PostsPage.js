@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import postService from "../services/postService";
+import PostForm from "../components/PostForm";
+import PostList from "../components/PostList";
 
 function PostsPage() {
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
 
   const fetchPosts = async () => {
     try {
@@ -18,6 +17,26 @@ function PostsPage() {
     }
   };
 
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+
+ return (
+    <div className="container mt-4">
+      <h1 className="mb-4">Inicio</h1>
+
+      {/* Formulario de nueva publicación */}
+      <PostForm onPostCreated={fetchPosts} />
+
+      {/* Lista de posts */}
+      <PostList posts={posts} />
+    </div>
+  );
+}
+
+/*
   const handleAddPost = async (newPost) => {
     try {
       const token = localStorage.getItem("token");
@@ -28,11 +47,12 @@ function PostsPage() {
     }
   };
 
+
   return (
     <div className="container mt-4">
       <h1 className="mb-4">Inicio</h1>
 
-      {/* 🔹 Aquí va el formulario de publicación */}
+
       <PostForm onSubmit={handleAddPost} />
 
       {posts.length > 0 ? (
@@ -146,5 +166,6 @@ function CommentForm({ onSubmit }) {
     </form>
   );
 }
+*/
 
 export default PostsPage;
