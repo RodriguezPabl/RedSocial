@@ -5,6 +5,7 @@ import equipo124.redsocial.model.User;
 import equipo124.redsocial.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class PostService {
         post.setUser(user);
         post.setContent(content);
         post.setImageUrl(imageUrl);
+        post.setCreatedAt(LocalDateTime.now());
         return postRepository.save(post);
     }
 
