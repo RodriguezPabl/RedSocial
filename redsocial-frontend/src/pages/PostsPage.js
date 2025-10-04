@@ -25,7 +25,7 @@ function PostsPage() {
 
  return (
     <div className="container mt-4">
-      <h1 className="mb-4">Inicio</h1>
+      <h1 className="mb-4 text-center">Inicio</h1>
 
       {/* Formulario de nueva publicación */}
       <PostForm onPostCreated={fetchPosts} />
