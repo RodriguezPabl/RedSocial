@@ -27,8 +27,8 @@ public class PostController {
         this.userService = userService;
     }
 
-    // 📌 Crear post con texto + imagen (opcional)
-    @PostMapping
+    //Crear post con texto + imagen (opcional)
+    @PostMapping( consumes = {"multipart/form-data"})
     public ResponseEntity<Post> createPost(
             @RequestParam("content") String content,
             @RequestParam(value = "image", required = false) MultipartFile image,
@@ -58,7 +58,7 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
-    // 📌 Obtener todos los posts
+    //Obtener todos los posts
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
     	List<Post> posts = postService.getAllPosts();

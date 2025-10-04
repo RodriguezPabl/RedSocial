@@ -32,26 +32,7 @@ function PostForm({ onPostCreated }) {
     }
   };
 
-  /*
-  return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
-      <textarea
-        placeholder="¿Qué estás pensando?"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        rows="3"
-      />
-      <br />
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setImage(e.target.files[0])}
-      />
-      <br />
-      <button type="submit">Publicar</button>
-    </form>
-  );
-*/
+  
 
 return (
     <div className="card shadow-sm mb-4">

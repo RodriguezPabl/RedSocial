@@ -13,6 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -48,6 +54,7 @@ public class SecurityConfig {
         JwtAuthFilter jwtFilter = new JwtAuthFilter(jwtUtil, userDetailsService);
 
         http.csrf(csrf -> csrf.disable())
+        	.cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/redsocial/auth/**", "/h2-console/**").permitAll() // login y register abiertos
                 .requestMatchers("/redsocial/posts/**").authenticated() // posts requieren JWT
@@ -55,11 +62,33 @@ public class SecurityConfig {
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authProvider())
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         // Permitir que el H2 console cargue en navegador
         http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
         return http.build();
+    }
+    
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+
+        // metodos HTTP permitidos
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+        // Headers permitidos
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+        configuration.setExposedHeaders(List.of("Authorization"));
+
+        // Permitir credenciales (cookies, auth headers)
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 }
